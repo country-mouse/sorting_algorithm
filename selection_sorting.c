@@ -5,34 +5,23 @@
 void swap(int* a, int* b)
 {
 	int tmp = *a;
-	*a =* b;
+	*a = *b;
 	*b = tmp;
 }
-void bubble(int a[], int s)
+void selection(int a[], int n)
 {
-	
-	for (int i = 0; i < s - 1; i++)
+	for (int i = 0; i < n; i++)
 	{
-		int cnt = 0;
-		int flag=0;
-		while (flag < s - 1)
+		int min = i;
+		for (int j = i; j < n; j++)
 		{
-			int k = s - 1;
-			for (int j = s - 1; j > i; j--)
-			{
-				if (a[j - 1] > a[j])
-				{
-					swap(&a[j - 1], &a[j]);
-					cnt++;
-					k = j;
-				}
-			}
-			flag = k;
+			if (a[min] > a[j])
+				min = j;
 		}
-		if (cnt == 0)
-			break;
+		swap(&a[i], &a[min]);
 	}
 }
+
 int main(void)
 {
 	int nx;
@@ -44,7 +33,7 @@ int main(void)
 		printf("x[%d]: ", i);
 		scanf("%d", &x[i]);
 	}
-	bubble(x, nx);
+	selection(x, nx);
 	for (int i = 0; i < nx; i++)
 	{
 		printf("x[%d]: %d\n", i, x[i]);
