@@ -4,11 +4,31 @@
 #define swap(type, x, y) do{type t = x; x = y; y = t;}while(0)
 
 
-void partition(int a[], int n)
+int sort3elem(int x[], int a, int b, int c)
 {
-	int pl = 0;
-	int pr = n - 1;
-	int x = a[n / 2];
+	if (x[b] < x[a]) swap(int, x[b], x[a]);
+	if (x[c] < x[b]) swap(int, x[c], x[b]);
+	if (x[b] < x[a]) swap(int, x[b], x[a]);
+	return b;
+}
+void quick(int a[], int left, int right)
+{
+	int pl = left;
+	int pr = right;
+	int m = sort3elem(a, pl, (pl + pr) / 2, pr);
+	int x = a[m];
+
+	swap(int, a[m], a[right - 1]);
+	pl++;
+	pr -= 2;
+
+	printf("a[%d]~a[%d]: {", left, right);
+	for (int i = left; i < right; i++)
+	{
+		printf("%d", a[i]);
+	}
+	printf("%d}\n", a[right]);
+
 	do {
 		while (a[pl] < x) pl++;
 		while (a[pr] > x) pr--;
@@ -18,28 +38,8 @@ void partition(int a[], int n)
 			pr--;
 		}
 	} while (pl <= pr);
-	printf("pivot value is %d.", x);
-	printf("the group under pivot\n");
-	for (int i = 0; i <= pl - 1; i++)
-	{
-		printf("%d", a[i]);
-	}
-	putchar('\n');
-	if (pl > pr + 1)
-	{
-		printf("피벗과 일치하는 그룹\n");
-		for (int i = pr + 1; i <= pl - 1; i++)
-		{
-			printf("%d", a[i]);
-			putchar('\n');
-		}
-	}
-	printf("group over pivot\n");
-	for (int i = pr + 1; i < n; i++)
-	{
-		printf("%d ", a[i]);
-	}
-	putchar('\n');
+	if (left < pr) quick(a, left, pr);
+	if (pl < right) quick(a, pl, right);
 }
 
 int main(void)
@@ -53,7 +53,7 @@ int main(void)
 		printf("x[%d]: ", i);
 		scanf("%d", &x[i]);
 	}
-	partition(x, nx);
+	quick(x, 0, nx-1);
 	for (int i = 0; i < nx; i++)
 	{
 		printf("x[%d]: %d\n", i, x[i]);
