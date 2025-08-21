@@ -2,29 +2,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void swap(int* a, int* b)
-{
-	int tmp = *a;
-	*a = *b;
-	*b = tmp;
-}
 
 void insertion(int a[], int n)
 {
 	for (int i = 1; i < n; i++)
 	{
-		int s = a[i];
-		int j = 0;
-		int flag;
-		while (a[i] < a[i - 1-j])
+		int tmp = a[i];
+		int j;
+		for (j = i; j > 0 && a[j - 1] > tmp;j--)
 		{
-			j++;
+			a[j] = a[j - 1];
 		}
-		flag = j;
-		for (int k = i; k >i-j; k--)
-		{
-			swap(&a[k], &a[k - 1]);
-		}
+		a[j] = tmp;
 	}
 
 }
