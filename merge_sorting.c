@@ -2,57 +2,58 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void merge(const int a[], int na, const int b[], int nb, int c[])
+static int* buff;
+static void __mergesort(int a[], int left, int right)
 {
-	int pa = 0;
-	int pb = 0;
-	int pc = 0;
+	if (left < right)
+	{
+		int center = (left + right) / 2;
+		int p = 0;
+		int i;
+		int j = 0;
+		int k = left;
+		__mergesort(a, left, center);
+		__mergesort(a, center + 1, right);
+		for (i = left; i <= center; i++)
+			buff[p++] = a[i];
+		while (i <= right && j < p)
+			a[k++] = (buff[j] <= a[i]) ? buff[j++] : a[i++];
+		while (j < p)
+			a[k++] = buff[j++];
+	}
+}
 
-	while (pa < na && pb < nb)
-		c[pc++] = (a[pa] <= b[pb]) ? a[pa++] : b[pb++];
-	while (pa < na)
-		c[pc++] = a[pa++];
-	while (pb < nb)
-		c[pc++] = b[pb++];
+int mergesort(int a[], int n)
+{
+	if ((buff = calloc(n, sizeof(int))) == NULL)
+		return -1;
+	__mergesort(a, 0, n - 1);
+	free(buff);
+	return 0;
 }
 
 int main(void)
 {
-	int na, nb;
+	int nx;
 	printf("enter number of A array: ");
-	scanf("%d", &na);
-	printf("enter number of B array: ");
-	scanf("%d", &nb);
-	int* a = calloc(na, sizeof(int));
-	int* b = calloc(nb, sizeof(int));
-	int* c = calloc(na+nb, sizeof(int));
+	scanf("%d", &nx);
+	
+	int* a = calloc(nx, sizeof(int));
 	printf("a[0]: ");
 	scanf("%d", &a[0]);
-	for (int i = 01; i < na; i++)
+	for (int i = 01; i < nx; i++)
 	{
-		do {
-			printf("a[%d]: ", i);
-			scanf("%d", &a[i]);
-		} while (a[i] < a[i - 1]);
+		printf("a[%d]: ", i);
+		scanf("%d", &a[i]);
 	}
-	printf("b[0]: ");
-	scanf("%d", &b[0]);
-	for (int i = 01; i < nb; i++)
-	{
-		do {
-			printf("b[%d]: ", i);
-			scanf("%d", &b[i]);
-		} while (b[i] < b[i - 1]);
-	}
-	merge(a, na, b, nb, c);
+
+	mergesort(a, nx);
 	puts("array A and B is merged & saved at array C");
-	for (int i = 0; i < na + nb; i++)
+	for (int i = 0; i < nx; i++)
 	{
-		printf("c[%2d] = %2d\n", i, c[i]);
+		printf("c[%2d] = %2d\n", i, a[i]);
 	}
-	free(a);
-	free(b);
-	free(c);
+	
 	return 0;
 
 }
