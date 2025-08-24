@@ -41,7 +41,7 @@ int main(void)
 	int* a = calloc(nx, sizeof(int));
 	printf("a[0]: ");
 	scanf("%d", &a[0]);
-	for (int i = 01; i < nx; i++)
+	for (int i = 0; i < nx; i++)
 	{
 		printf("a[%d]: ", i);
 		scanf("%d", &a[i]);
